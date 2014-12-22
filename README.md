@@ -2,6 +2,7 @@ roto.rb
 ========
 
 Simple 2D/3D point rotation module written in pure ruby. 
+
 This is a port of the original python module jimijimi/rotor.py 
 
 Installation
@@ -17,7 +18,7 @@ None
 License
 -------
 
-The project has been released with the MIT license
+The project has been released under the MIT license
 
 Author
 ------
