@@ -34,14 +34,14 @@ module Roto
 		return [ u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0] ] 
 	end
 	
-	def Roto.vectorDotProduct( v0, v1 )
+	def Roto.vectorDotProduct( u, v )
 		"""Returns the scalar quantity representing the dot product of two vectors"""
-		return v0[0] * v1[0] + v0[1] * v1[1] + v0[2] * v1[2]
+		return u[0] * v[0] + u[1] * v[1] + u[2] * v[2]
 	end
 		
-	def Roto.vectorSum( v0, v1 )
+	def Roto.vectorSum( u, v )
 		"""Returns the sum of two vectors"""
-		return [ v0[0] + v1[0], v0[1] + v1[1], v0[2] + v1[2] ]
+		return [ u[0] + v[0], u[1] + v[1], u[2] + v[2] ]
 	end
 
 	def Roto.vectorScaling( scale, v )
@@ -60,15 +60,15 @@ module Roto
 		return [ v[0] / v_mag, v[1] / v_mag, v[2] / v_mag ] 
 	end
 		
-	def Roto.angleBetween2VectorsRad( a, b )
-		a_mag = Roto.vectorMagnitude( a )
-		b_mag = Roto.vectorMagnitude( b )
-		adotb = Roto.vectorDotProduct( a, b )
-		return Math.acos( adotb / ( a_mag * b_mag ) )
+	def Roto.angleBetween2VectorsRad( u, v )
+		u_mag = Roto.vectorMagnitude( u )
+		v_mag = Roto.vectorMagnitude( v )
+		udotv = Roto.vectorDotProduct( u, v )
+		return Math.acos( udotv / ( u_mag * v_mag ) )
 	end
 		
-	def Roto.angleBetween2VectorsDeg( a, b )
-		return Roto.angleBetween2VectorsRad( a, b ) * 180.0 / Math::PI 
+	def Roto.angleBetween2VectorsDeg( u, v )
+		return Roto.rad2deg( Roto.angleBetween2VectorsRad( u, v ) )  
 	end
 		
 	def Roto.quaternionDotProduct( q0, q1 )
@@ -109,10 +109,15 @@ module Roto
 	end
 				 
 	def Roto.deg2rad( angle_deg )
-		"""Converts the given angle to radians"""
-		return angle_deg * 2.0 * Math::PI / 360.0
+		"""Converts the given angle in degrees to radians"""
+		return angle_deg * Math::PI / 180.0
 	end
-		
+	
+	def Roto.rad2deg( angle_rad )
+		"""Converts the given angle in radians to degrees"""
+		return angle_rad * 180.0 / Math::PI
+	end
+	
 	#  === Rotation functions ===
 		
 	def Roto.rotate( p0, angle, v )
