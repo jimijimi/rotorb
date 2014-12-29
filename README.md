@@ -111,4 +111,52 @@ Output:
   0.805,-0.311,0.506     #315 deg
 ```
 
+API
+---
+info - shows module description
+
+vectorCrossProduct( u, v ) - Returns ( u x v )
+
+vectorDotProduct( u, v ) - Returns ( u dot v )
+
+vectorSum( u, v ) - Returns ( u + v )
+
+vectorScaling( scale, v ) - Returns ( scale * v )
+
+vectorMagnitude( v ) - Returns vector magnitude.
+
+vectorNormalized( v ) - Returns the unit vector equivalent to v.
+
+angleBetween2VectorsRad( u, v ) - Returns the angle in radians between u and v.
+
+angleBetween2VectorsDeg( u, v ) - Returns the angle in degrees between u and v.
+
+quaternionDotProduct( q0, q1 ) - Returns the dot product between q0 and q1. This is a scalar.
+
+quaternionProduct( q0, q1 ) - Returns the quaternion obtained from the product between q0 and q1.
+
+quaternionMagnitude( q ) - Returns the magnitude of the quaternion q0.
+
+quaternionInverse( q ) - Returns the inverse of a unit quaternion.
+
+quaternionRotor( v, phi ) - Returns the quaternion representing the axys of rotation v and the rotation angle phi.
+
+deg2rad( angle_deg ) - converts the angle from degrees to radians.
+
+rotate( p0, angle, v ) - Rotates an arbitrary point p0 around an arbitrary axis v by an angle expessed in degrees.
+
+rotateX, rotateY, rotateZ - Rotates an arbitrary point p0 around any of the coordinate axes by an angle expressed in degrees.
+
+
+
+
+
+
+
+
+
+
+
+
+
 
