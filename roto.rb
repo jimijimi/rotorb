@@ -1,6 +1,7 @@
 # roto.rb - simple Ruby rotation module v1.0
 #           2D/3D rotation of arbitrary point in the space.
 #           version 1.0 released on December 21, 2014
+#           Additional information about quaternions see:
 
 '''
   The MIT License (MIT)
@@ -116,6 +117,65 @@ module Roto
 	def Roto.rad2deg( angle_rad )
 		"""Converts the given angle in radians to degrees"""
 		return angle_rad * 180.0 / Math::PI
+	end
+	
+	def Roto.quaternionToMatrix( q )
+		"""Converts the quaternion q to a 4 x 4 matrix"""
+		matrix4x4 = [ ]
+		nq = Roto.quaternionMagnitude( q )
+		s =  nq > 0.0 ? ( 2.0 / nq ) : 0.0
+		xs = q[ 1 ] * s
+		ys = q[ 2 ] * s
+		zs = q[ 3 ] * s
+		wx = q[ 0 ] * xs
+		wy = q[ 0 ] * ys
+		wz = q[ 0 ] * zs
+		xx = q[ 1 ] * xs
+		xy = q[ 1 ] * ys
+		xz = q[ 1 ] * zs
+		yy = q[ 2 ] * ys
+		yz = q[ 2 ] * zs
+		zz = q[ 3 ] * zs
+		matrix4x4[ 0 ] = 1.0 - ( yy + zz )
+		matrix4x4[ 1 ] = xy - wz
+		matrix4x4[ 2 ] = xz + wy
+		matrix4x4[ 3 ] = 0.0
+		matrix4x4[ 4 ] = xy + wz
+		matrix4x4[ 5 ] = 1.0 - ( xx + zz )
+		matrix4x4[ 6 ] = yz - wx
+		matrix4x4[ 7 ] = 0.0
+		matrix4x4[ 8 ] = xz - wy
+		matrix4x4[ 9 ] = yz + wx
+		matrix4x4[ 10 ] = 1.0 - ( xx + yy )
+		matrix4x4[ 11 ] = 0.0
+		matrix4x4[ 12 ] = 0.0
+		matrix4x4[ 13 ] = 0.0
+		matrix4x4[ 14 ] = 0.0
+		matrix4x4[ 15 ] = 1.0
+		return matrix4x4
+	end
+	
+	def Roto.matrix4x4_Multiplication( a, b )
+		# a = this rotation
+		# b = last rotation
+		matrix4x4 = [ ]
+		matrix4x4[ 0 ] = a[ 0 ] * b[ 0 ] + a[ 1 ] * b[ 4 ] + a[ 2 ] * b[ 8 ] + a[ 3 ] * b[ 12 ]
+		matrix4x4[ 1 ] = a[ 0 ] * b[ 1 ] + a[ 1 ] * b[ 5 ] + a[ 2 ] * b[ 9 ] + a[ 3 ] * b[ 13 ]
+		matrix4x4[ 2 ] = a[ 0 ] * b[ 2 ] + a[ 1 ] * b[ 6 ] + a[ 2 ] * b[ 10 ] + a[ 3 ] * b[ 14 ]
+		matrix4x4[ 3 ] = a[ 0 ] * b[ 3 ] + a[ 1 ] * b[ 7 ] + a[ 2 ] * b[ 11 ] + a[ 3 ] * b[ 15 ]
+		matrix4x4[ 4 ] = a[ 4 ] * b[ 0 ] + a[ 5 ] * b[ 4 ] + a[ 6 ] * b[ 8 ] + a[ 7 ] * b[ 12 ]
+		matrix4x4[ 5 ] = a[ 4 ] * b[ 1 ] + a[ 5 ] * b[ 5 ] + a[ 6 ] * b[ 9 ] + a[ 7 ] * b[ 13 ]
+		matrix4x4[ 6 ] = a[ 4 ] * b[ 2 ] + a[ 5 ] * b[ 6 ] + a[ 6 ] * b[ 10 ] + a[ 7 ] * b[ 14 ]
+		matrix4x4[ 7 ] = a[ 4 ] * b[ 3 ] + a[ 5 ] * b[ 7 ] + a[ 6 ] * b[ 11 ] + a[ 7 ] * b[ 15 ]
+		matrix4x4[ 8 ] = a[ 8 ] * b[ 0 ] + a[ 9 ] * b[ 4 ] + a[ 10 ] * b[ 8 ] + a[ 11 ] * b[ 12 ]
+		matrix4x4[ 9 ] = a[ 8 ] * b[ 1 ] + a[ 9 ] * b[ 5 ] + a[ 10 ] * b[ 9 ] + a[ 11 ] * b[ 13 ]
+		matrix4x4[ 10 ] = a[ 8 ] * b[ 2 ] + a[ 9 ] * b[ 6 ] + a[ 10 ] * b[ 10 ] + a[ 11 ] * b[ 14 ]
+		matrix4x4[ 11 ] = a[ 8 ] * b[ 3 ] + a[ 9 ] * b[ 7 ] + a[ 10 ] * b[ 11 ] + a[ 11 ] * b[ 15 ]
+		matrix4x4[ 12 ] = a[ 12 ] * b[ 0 ] + a[ 13 ] * b[ 4 ] + a[ 14 ] * b[ 8 ] + a[ 15 ] * b[ 12 ]
+		matrix4x4[ 13 ] = a[ 12 ] * b[ 1 ] + a[ 13 ] * b[ 5 ] + a[ 14 ] * b[ 9 ] + a[ 15 ] * b[ 13 ]
+		matrix4x4[ 14 ] = a[ 12 ] * b[ 2 ] + a[ 13 ] * b[ 6 ] + a[ 14 ] * b[ 10 ] + a[ 15 ] * b[ 14 ]
+		matrix4x4[ 15 ] = a[ 12 ] * b[ 3 ] + a[ 13 ] * b[ 7 ] + a[ 14 ] * b[ 11 ] + a[ 15 ] * b[ 15 ]
+		return matrix4x4
 	end
 	
 	#  === Rotation functions ===
